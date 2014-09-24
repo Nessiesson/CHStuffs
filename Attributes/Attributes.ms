@@ -1,5 +1,3 @@
-_specialitems_register('random.wtf');
-_specialitems_register('random.wtf2');
 _attributes_register_attribute('Godly');
 _attributes_register_attribute('Speed');
 
