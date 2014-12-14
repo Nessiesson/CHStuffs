@@ -1,0 +1,7 @@
+*:'/irc' $ = >>>
+	_chat(player(), $);
+<<<
+
+*:'/ircbow' $ = >>>
+	_chat('~console', _colorize($));
+<<<
