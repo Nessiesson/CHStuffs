@@ -1,5 +1,6 @@
 proc _chat(@player, @message) {
 	_irc_msg(@player . ': ' . @message);
+	console("[Chat] @player: @message", false);
 
 	@format = associative_array(
 		'type': 'chat',
@@ -9,11 +10,11 @@ proc _chat(@player, @message) {
 	foreach(@player in all_players()) {
 		tmsg(@player, _chatformat_construct_message(@player, @format));
 	}
-	console("[Chat] @player: @message", false);
 }
 
 proc _chat_action(@player, @message) {
 	_irc_msg('* ' . @player . ' ' . @message);
+	console("[Chat] * @player @message", false);
 	@format = associative_array(
 		'type': 'action',
 		'player': @player,
@@ -22,10 +23,10 @@ proc _chat_action(@player, @message) {
 	foreach(@player in all_players()) {
 		tmsg(@player, _chatformat_construct_message(@player, @format));
 	}
-	console("[Chat] * @player @message", false);
 }
 
 proc _chat_irc(@player, @message) {
+	console("[IRC] @player: @message", false);
 	@format = associative_array(
 		'type': 'irc',
 		'player': @player,
@@ -34,10 +35,10 @@ proc _chat_irc(@player, @message) {
 	foreach(@player in all_players()) {
 		tmsg(@player, _chatformat_construct_message(@player, @format));
 	}
-	console("[IRC] @player: @message", false);
 }
 
 proc _chat_irc_action(@player, @message) {
+	console("[IRC] * @player @message", false);
 	@format = associative_array(
 		'type': 'irc_action',
 		'player': @player,
@@ -46,7 +47,6 @@ proc _chat_irc_action(@player, @message) {
 	foreach(@player in all_players()) {
 		tmsg(@player, _chatformat_construct_message(@player, @format));
 	}
-	console("[IRC] * @player @message", false);
 }
 
 proc _colorize(@text, @colorArray) {
