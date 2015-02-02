@@ -1,6 +1,6 @@
 *:'/ra' [$] = run('/recompile');
 
 *:'/exit' [$] = run('/stop');
-*:'quit' [$] = run('/stop');
+*:'/quit' [$] = run('/stop');
 
 *:'/run' $ = eval($);
