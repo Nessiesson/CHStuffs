@@ -7,9 +7,7 @@ proc _chat(@player, @message) {
 		'player': @player,
 		'message': @message,
 	);
-	foreach(@player in all_players()) {
-		tmsg(@player, _chatformat_construct_message(@player, @format));
-	}
+	_chat_send_message(@format);
 }
 
 proc _chat_action(@player, @message) {
@@ -20,9 +18,7 @@ proc _chat_action(@player, @message) {
 		'player': @player,
 		'message': @message,
 	);
-	foreach(@player in all_players()) {
-		tmsg(@player, _chatformat_construct_message(@player, @format));
-	}
+	_chat_send_message(@format);
 }
 
 proc _chat_irc(@player, @message) {
@@ -32,9 +28,7 @@ proc _chat_irc(@player, @message) {
 		'player': @player,
 		'message': irc_irc2mc_colors(@message),
 	);
-	foreach(@player in all_players()) {
-		tmsg(@player, _chatformat_construct_message(@player, @format));
-	}
+	_chat_send_message(@format);
 }
 
 proc _chat_irc_action(@player, @message) {
@@ -44,9 +38,17 @@ proc _chat_irc_action(@player, @message) {
 		'player': @player,
 		'message': irc_irc2mc_colors(@message),
 	);
+	_chat_send_message(@format);
+}
+
+proc _chat_send_message(@format) {
 	foreach(@player in all_players()) {
 		tmsg(@player, _chatformat_construct_message(@player, @format));
 	}
+}
+
+proc _chat_to_tellraw(@format) {
+	
 }
 
 proc _colorize(@text, @colorArray) {
