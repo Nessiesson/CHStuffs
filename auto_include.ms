@@ -46,6 +46,3 @@ proc _3d_distance(@b1, @b2) {
 		)
 	);
 }
-
-include('ActionBar.Inc.ms');
-include('MinecraftVersion.Inc.ms');
