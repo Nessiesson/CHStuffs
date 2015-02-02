@@ -9,7 +9,7 @@
 	@itemWithAttribute = _attributes_item_add_attribute($attribute, @item);
 	if(is_null(@itemWithAttribute)) {
 		die(colorize('&cAttribute &6' . $attribute . ' &cdoesn\'t exist.'));
-	};
+	}
 	@slot = pinfo(player(), 15);
 	@inv = associative_array();
 	@inv[@slot] = @itemWithAttribute;

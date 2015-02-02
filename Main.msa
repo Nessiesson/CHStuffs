@@ -4,3 +4,15 @@
 *:'/quit' [$] = run('/stop');
 
 *:'/run' $ = eval($);
+
+*:'/fly' [$] = >>>
+	@player = player();
+ 	@event = associative_array(
+ 		event_type: 'player_toggle_flight',
+ 		flying: true,
+ 		location: ploc(@player),
+ 		macrotype: 'player',
+ 		player: @player,
+ 	);
+	trigger('player_toggle_flight', @event, true);
+<<<
