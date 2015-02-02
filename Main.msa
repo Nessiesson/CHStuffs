@@ -5,14 +5,7 @@
 
 *:'/run' $ = eval($);
 
-*:'/fly' [$] = >>>
-	@player = player();
- 	@event = associative_array(
- 		event_type: 'player_toggle_flight',
- 		flying: true,
- 		location: ploc(@player),
- 		macrotype: 'player',
- 		player: @player,
- 	);
-	trigger('player_toggle_flight', @event, true);
+*:'/tps' [$] = >>>
+	@tps = split(', ', split(': ', replace(strip_colors(capture_runas('~console', '/spigot:tps')), '*', ''))[1]);
+	msg(@tps);
 <<<
