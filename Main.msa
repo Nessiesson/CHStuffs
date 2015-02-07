@@ -1,9 +1,9 @@
 *:'/ra' [$] = run('/recompile');
+*:'/run' $ = eval($);
+*:'/reload' [$] = die(colorize('&cDon\'t do that. :)'));
 
 *:'/exit' [$] = run('/stop');
 *:'/quit' [$] = run('/stop');
-
-*:'/run' $ = eval($);
 
 *:'/tps' [$] = >>>
 	@tps = split(', ', split(': ', replace(strip_colors(capture_runas('~console', '/spigot:tps')), '*', ''))[1]);
