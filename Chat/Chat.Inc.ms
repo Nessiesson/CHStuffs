@@ -1,5 +1,4 @@
 proc _colorize(@text, @colorArray) {
-	console(@text);
 	@message = array();
 	if(is_array(@colorArray)) {
 		foreach(@char in @text) {
