@@ -21,6 +21,9 @@ proc _uuid_reload_player(@player) {
 }
 
 proc _uuid(@player) {
+	if(@player == "") {
+		try(@player = player());
+	}
 	@length = length(@player);
 	@uuid = "";
 	if(@length <= 16) {
@@ -42,13 +45,8 @@ proc _uuid(@player) {
 }
 
 proc _uuid_dashes(@player) {
-	@uuid = _uuid(@player);
-	@uuidDashes = substr(@uuid, 0, 8) . "_";
-	@uuidDashes .= substr(@uuid, 8, 12) . "_";
-	@uuidDashes .= substr(@uuid, 12, 16) . "_";
-	@uuidDashes .= substr(@uuid, 16, 20) . "_";
-	@uuidDashes .= substr(@uuid, 20, 32);
-	return(@uuidDashes);
+	@uuid = reg_replace("^(.{8})(.{4})(.{4})(.{4})(.{12})$", "$1_$2_$3_$4_$5", _uuid(@player));
+	return(@uuid);
 }
 
 proc _uuid_set_names(@player) {
