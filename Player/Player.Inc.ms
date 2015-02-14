@@ -41,6 +41,16 @@ proc _uuid(@player) {
 	return(@uuid);
 }
 
+proc _uuid_dashes(@player) {
+	@uuid = _uuid(@player);
+	@uuidDashes = substr(@uuid, 0, 8) . "_";
+	@uuidDashes .= substr(@uuid, 8, 12) . "_";
+	@uuidDashes .= substr(@uuid, 12, 16) . "_";
+	@uuidDashes .= substr(@uuid, 16, 20) . "_";
+	@uuidDashes .= substr(@uuid, 20, 32);
+	return(@uuidDashes);
+}
+
 proc _uuid_set_names(@player) {
 	@uuid = _uuid(@player);
 	@options = associative_array(
