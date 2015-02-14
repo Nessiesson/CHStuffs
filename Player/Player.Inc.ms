@@ -47,9 +47,15 @@ proc _uuid_set_names(@player) {
 		success: closure(@response) {
 			if(@response["responseCode"] == 200) {
 				@uuids = json_decode(@response["body"]);
-				_log(@uuids);
+				@short = array();
+				foreach(@entry in @uuids) {
+					@short[] = @entry["name"];
+				}
+				store_value("uuid.@uuid.names.full", @uuids);
+				store_value("uuid.@uuid.names.short", @short);
+			} else {
+				_log("Failed to retrieve UUID: @uuid", "UUID");
 			}
-			_log(@response);
 		},
 		error: closure(@response) {
 			_log("Failed to retrieve UUID: @uuid", "UUID");
