@@ -46,3 +46,51 @@ proc _3d_distance(@b1, @b2) {
 		)
 	);
 }
+
+proc _colorize(@text, @colorArray) {
+	@message = array();
+	if(is_array(@colorArray)) {
+		foreach(@char in @text) {
+			@message[] = color(array_rand(@colorArray, 1, false)[0]) . @char;
+		}
+	} else {
+		foreach(@char in @text) {
+			@message[] = color(rand(0, 16)) . @char;
+		}
+	}
+	@message = array_implode(@message, "");
+	return(@message);
+}
+
+proc _last_color(@string) {
+	@string = colorize(@string);
+	@color = "";
+	for(@i = length(@string) - 1, @i >= 0, @i--) {
+		if(@string[@i] == "\u00A7") {
+			if(reg_match("(?i)[0-9a-fklmnor]", @string[@i + 1])) {
+				@color = "&" . @string[@i + 1] . @color;
+			}
+			if(reg_match("(?i)[0-9a-fr]", @string[@i + 1])) {
+				return(@color);
+			}
+		}
+	}
+	return("&f");
+}
+ 
+
+proc _start() {
+	export("profiling.start", nano_time());
+}
+
+proc _stop() {
+	console("Took " . sprintf("%.3f", (nano_time() - import("profiling.start")) * double("1E-6")) . "ms.");
+}
+
+proc _log(@message, @package) {
+	@pwd = @package;
+	if(@package == "") {
+		@pwd = "Log";
+	}
+	console(colorize("[@pwd] @message"), false);
+}
