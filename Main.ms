@@ -1,5 +1,5 @@
 bind(player_command, null, null, @event) {
-	@replacement = reg_replace("^/(.*):", "/", @event["command"]);
+	@replacement = reg_replace("^/\\S*:", "/", @event["command"]);
 	modify_event("command", @replacement);
 }
 
