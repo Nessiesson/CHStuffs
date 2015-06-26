@@ -7,7 +7,7 @@ bind(async_player_chat, null, null, @event) {
 		suggest_command: "/msg @player ",
 	);
 	if(array_size(@pastNames) > 0) {
-		@name["show_text"] = "&o@player was previously known as: \n" . array_implode(@pastNames, "\n");
+		@name["show_text"] = "&o@player was previously known as:\n" . array_implode(@pastNames, "\n");
 	}
 	@tellraw = array(@name);
 	@tellraw[] = associative_array(

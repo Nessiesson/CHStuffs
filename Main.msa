@@ -1,11 +1,10 @@
-*:'/ra' [$] = run('/recompile');
-*:'/run' $ = eval($);
-*:'/reload' [$] = die(colorize('&cDon\'t do that. :)'));
+*:"/ra" [$] = run("/recompile");
+*:"/run" $ = eval($);
 
-*:'/exit' [$] = run('/stop');
-*:'/quit' [$] = run('/stop');
+*:"/exit" [$] = run("/stop");
+*:"/quit" [$] = run("/stop");
 
-*:'/tps' [$] = >>>
-	@tps = split(', ', split(': ', replace(strip_colors(capture_runas('~console', '/spigot:tps')), '*', ''))[1]);
+*:"/tps" [$] = >>>
+	@tps = split(", ", split(": ", replace(strip_colors(capture_runas("~console", "/spigot:tps")), "*", ""))[1]);
 	msg(@tps);
 <<<

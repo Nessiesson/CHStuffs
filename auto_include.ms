@@ -87,10 +87,36 @@ proc _stop() {
 	console("Took " . sprintf("%.3f", (nano_time() - import("profiling.start")) * double("1E-6")) . "ms.");
 }
 
-proc _log(@message, @package) {
-	@pwd = @package;
-	if(@package == "") {
-		@pwd = "Log";
+proc _log(@message, @package = "Log") {
+	console(colorize("[@package] @message"), false);
+}
+
+proc _assert_length(@string, @length) {
+	@stringLength = length(@string);
+	if(@stringLength == @length) {
+		return(true);
+	} else {
+		_log("Received string of length @stringLength. Expected length @length.");
+		return(false);
 	}
-	console(colorize("[@pwd] @message"), false);
+}
+
+proc _is_char(@string) {
+	return(_assert_length(@string, 1));
+}
+
+proc _is_char_uppercase(@char) {
+	if(_is_char(@char)) {
+		return(reg_count("[A-Z]", @char) == 1);
+	} else {
+		return(false);
+	}
+}
+
+proc _is_char_lowercase(@char) {
+	if(_is_char(@char)) {
+		return(reg_count("[a-z]", @char) == 1);
+	} else {
+		return(false);
+	}
 }
