@@ -1,4 +1,4 @@
-bind(async_player_chat, null, null, @event) {
+bind(player_chat, null, null, @event) {
 	cancel();
 	@player = @event["player"];
 	@pastNames = _uuid_get_names_short(@player)[..-2];
@@ -11,7 +11,26 @@ bind(async_player_chat, null, null, @event) {
 	}
 	@tellraw = array(@name);
 	@tellraw[] = associative_array(
-		text: ": " . @event["message"];
+		text: "&7:&r ",
 	);
+	@urlRegex = '(?i)(https?:\\/\\/)?[\\w-]+(\\.[\\w-]+)+\\.?(:\\d+)?(\\/\\S*)?';
+	foreach(@word in parse_args(@event["message"])) {
+		if(reg_count(@urlRegex, _strip_colors(@word)) > 0) {
+			if(!_string_starts_with(to_lower(@word), "http://")) {
+				@url = "http://@word";
+			} else {
+				@url = @word;
+			}
+			@tellraw[] = associative_array(
+				text: "@word ",
+				open_url: strip_colors(@url),
+				show_text: "Click to open @word",
+			);
+		} else {
+			@tellraw[] = associative_array(
+				text: "@word ",
+			);
+		}
+	}
 	_tellraw_broadcast(@tellraw);
 }

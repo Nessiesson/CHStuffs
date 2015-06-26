@@ -1,7 +1,7 @@
 _attributes_register_attribute("Godly");
 _attributes_register_attribute("Speed");
 
-bind("entity_damage", associative_array(id: "attributes_Godly"), associative_array(type: "PLAYER"), @event) {
+bind(entity_damage, associative_array(id: "attributes_Godly"), associative_array(type: "PLAYER"), @event) {
 	if(_attributes_has_item_with_attribute("Godly", @event["player"])) {
 		cancel();
 	}

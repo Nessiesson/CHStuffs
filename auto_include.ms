@@ -62,6 +62,12 @@ proc _colorize(@text, @colorArray) {
 	return(@message);
 }
 
+proc _strip_colors(@string) {
+	@string = reg_replace("(?i)\u00A7[0-9A-Fklmnor]", "", @string);
+	@string = reg_replace("(?i)&[0-9A-Fklmnor]", "", @string);
+	return(@string);
+}
+
 proc _last_color(@string) {
 	@string = colorize(@string);
 	@color = "";
@@ -119,4 +125,13 @@ proc _is_char_lowercase(@char) {
 	} else {
 		return(false);
 	}
+}
+
+proc _string_starts_with(@string, @search) {
+	@stringLength = length(@string);
+	@searchLength = length(@search);
+	if(@stringLength < @searchLength) {
+		return(false);
+	}
+	return(substr(@string, 0, @searchLength) == @search);
 }
