@@ -13,9 +13,13 @@ bind(player_chat, null, null, @event) {
 	@tellraw[] = associative_array(
 		text: "&7:&r ",
 	);
+	@part = "";
 	@urlRegex = '(?i)(https?:\\/\\/)?[\\w-]+(\\.[\\w-]+)+\\.?(:\\d+)?(\\/\\S*)?';
 	foreach(@word in parse_args(@event["message"])) {
 		if(reg_count(@urlRegex, _strip_colors(@word)) > 0) {
+			@tellraw[] = associative_array(
+				text: @part,
+			);
 			if(!_string_starts_with(to_lower(@word), "http://")) {
 				@url = "http://@word";
 			} else {
@@ -26,11 +30,15 @@ bind(player_chat, null, null, @event) {
 				open_url: strip_colors(@url),
 				show_text: "Click to open @word",
 			);
+			@part = "";
 		} else {
-			@tellraw[] = associative_array(
-				text: "@word ",
-			);
+			@part .= "@word ";
 		}
+	}
+	if(@part != "") {
+		@tellraw[] = associative_array(
+			text: @part,
+		);
 	}
 	_tellraw_broadcast(@tellraw);
 }
