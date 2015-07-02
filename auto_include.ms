@@ -135,3 +135,21 @@ proc _string_starts_with(@string, @search) {
 	}
 	return(substr(@string, 0, @searchLength) == @search);
 }
+
+proc _sort_key_by_value(@array) {
+	@proper = array();
+	foreach(@key: @value in @start) {
+		@proper[] = associative_array(
+			key: @key,
+			value: @value,
+		);
+	}
+	array_sort(@proper, closure(@left, @right) {
+		return(@left["value"] > @right["value"]);
+	});
+	@sorted = array();
+	foreach(@value in @proper) {
+		@sorted[] = @value["key"];
+	}
+	return(@sorted);
+}
