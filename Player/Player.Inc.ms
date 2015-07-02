@@ -61,6 +61,7 @@ proc _uuid_set_names(@player) {
 				}
 				store_value("uuid.@uuid.names.full", @uuids);
 				store_value("uuid.@uuid.names.short", @short);
+				_uuid_reload_player(@player);
 			} else {
 				_log("Failed to retrieve UUID: @uuid", "UUID");
 			}
