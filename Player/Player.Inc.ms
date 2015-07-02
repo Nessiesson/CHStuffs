@@ -82,3 +82,17 @@ proc _uuid_get_names_short(@player) {
 	@uuid = _uuid(@player);
 	return(import("uuid.@uuid.names.short"));
 }
+
+proc _all_players(@world = "") {
+	@players = array();
+	if(array_contains(get_worlds(), @world)) {
+		@players = all_players(@world);
+	} else {
+		@players = all_players();
+	}
+	@uuids = array();
+	foreach(@player in @players) {
+		@uuids[] = _uuid(@player);
+	}
+	return(@uuids);
+}
