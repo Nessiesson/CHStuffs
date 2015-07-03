@@ -55,8 +55,7 @@ proc _attributes_get_attributes_from_item(@item) {
 }
 
 proc _attributes_item_add_attribute(@item, @attribute) {
-	if(!_attributes_attribute_exists(@attribute)
-	|| _attributes_item_has_attribute(@item, @attribute)) {
+	if(_attributes_item_has_attribute(@item, @attribute)) {
 		return(@item);
 	}
 	if(!is_array(@item["meta"])) {
@@ -101,7 +100,7 @@ proc _attributes_item_remove_attribute(@item, @attribute) {
 
 proc _attributes_item_remove_attribute_from_slot(@player, @attribute, @slot = "") {
 	if(@slot == "") {
-		@slot = pinfo(@player)[15];
+		@slot = pinfo(@player, 15);
 	}
 	@item = pinv(@player)[@slot];
 	if(is_null(@item)) {
@@ -116,7 +115,7 @@ proc _attributes_item_remove_attribute_from_slot(@player, @attribute, @slot = ""
 	return(true);
 }
 
-proc _attributes_has_item_with_attribute(@player, @attribute, @inv) {
+proc _attributes_has_item_with_attribute(@player, @attribute, @inv = "") {
 	if(@inv == "") {
 		@inv = pinv(@player);
 	}
@@ -131,7 +130,10 @@ proc _attributes_has_item_with_attribute(@player, @attribute, @inv) {
 	return(false);
 }
 
-proc _attributes_remove_items_with_attribute(@player, @attribute) {
+proc _attributes_remove_items_with_attribute(@player, @attribute, @inv = "") {
+	if(@inv == "") {
+		@inv = pinv(@player);
+	}
 	@inv = pinv(@player);
 	foreach(@slot: @item in @inv) {
 		if(is_null(@slot)) {
