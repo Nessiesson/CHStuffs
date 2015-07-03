@@ -24,7 +24,7 @@ proc _attributes_all_attributes() {
 proc _attributes_item_has_attribute(@attribute, @item) {
 	if(_inventory_lore_exists(@item)) {
 		foreach(@line in @item["meta"]["lore"]) {
-			if(string_position(@line, colorize("&d&e @attribute&r")) > -1) {
+			if(string_position(@line, colorize("&d&e@attribute&r")) > -1) {
 				return(true);
 			}
 		}
@@ -64,7 +64,7 @@ proc _attributes_item_add_attribute(@attribute, @item) {
 		@item["meta"] = associative_array();
 		@item["meta"]["lore"] = array();
 	}
-	@item["meta"]["lore"][] = colorize("&d&e @attribute&r");
+	@item["meta"]["lore"][] = colorize("&d&e@attribute&r");
 	return(@item);
 }
 
@@ -92,7 +92,7 @@ proc _attributes_item_remove_attribute(@attribute, @item) {
 	@lore = @item["meta"]["lore"];
 	@item["meta"]["lore"] = array();
 	foreach(@index: @line in @lore) {
-		@line = replace(@line, colorize("&d&e @attribute&r"), "");
+		@line = replace(@line, colorize("&d&e@attribute&r"), "");
 		if(@line != "") {
 			@item["meta"]["lore"][] = @line;
 		}
