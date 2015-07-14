@@ -1,26 +1,34 @@
-proc _uuid_reload() {
+proc _reload_all_players() {
 	foreach(@player in all_players()) {
-		_uuid_reload_player(@player);
+		_reload_pdata(@player);
 	}
 }
 
-proc _uuid_reload_player(@player) {
+proc _reload_pdata(@player) {
 	@uuid = _uuid(@player);
-	if(is_null(get_value("uuid.@uuid.names.short"))) {
-		@full = array(associative_array(
-			name: player(@uuid),
-		));
-		@short = array(
-			player(@uuid),
+	@pdata = _pdata(@uuid);
+	if(!is_array(@pdata)
+	|| !is_associative(@pdata)) {
+		@pdata = associative_array(
+			names: array(player(@uuid)),
 		);
-		store_value("uuid.@uuid.names.full", @full);
-		store_value("uuid.@uuid.names.short", @short);
 	}
-	export("uuid.@uuid.names.full", get_value("uuid.@uuid.names.full"));
-	export("uuid.@uuid.names.short", get_value("uuid.@uuid.names.short"));
+	export("uuid.@uuid", @pdata);
 }
 
-proc _uuid(@player) {
+proc _pdata(@player = "") {
+	@uuid = _uuid(@player);
+	@pdata = import("uuid.@uuid");
+	return(@pdata);
+}
+
+proc _set_pdata(@player = "", @pdata) {
+	@uuid = _uuid(@player);
+	store_value("uuid.@uuid", @pdata);
+	_reload_pdata(@uuid);
+}
+
+proc _uuid(@player = "") {
 	if(@player == "") {
 		try(@player = player());
 	}
@@ -44,43 +52,40 @@ proc _uuid(@player) {
 	return(@uuid);
 }
 
-proc _uuid_dashes(@player) {
-	@uuid = reg_replace("^(.{8})(.{4})(.{4})(.{4})(.{12})$", "$1_$2_$3_$4_$5", _uuid(@player));
+proc _uuid_dashes(@player = "") {
+	@uuid = reg_replace("^(.{8})(.{4})(.{4})(.{4})(.{12})$", "$1-$2-$3-$4-$5", _uuid(@player));
 	return(@uuid);
 }
 
-proc _uuid_set_names(@player) {
+proc _uuid_set_names(@player = "") {
+	console("..")
 	@uuid = _uuid(@player);
 	@options = associative_array(
 		success: closure(@response) {
 			if(@response["responseCode"] == 200) {
 				@uuids = json_decode(@response["body"]);
-				@short = array();
-				foreach(@entry in @uuids) {
-					@short[] = @entry["name"];
+				@names = array();
+				console(@uuids)
+				foreach(@name in @uuids) {
+					@names[] = @name["name"];
 				}
-				store_value("uuid.@uuid.names.full", @uuids);
-				store_value("uuid.@uuid.names.short", @short);
-				_uuid_reload_player(@player);
+				@pdata = _pdata(@uuid);
+				@pdata["names"] = @names;
+				_set_pdata(@uuid, @pdata);
 			} else {
-				_log("Failed to retrieve UUID: @uuid", "UUID");
+				_log("Failed to retrieve UUID: @uuid.", "UUID");
 			}
 		},
 		error: closure(@response) {
-			_log("Failed to retrieve UUID: @uuid", "UUID");
+			_log("Failed to retrieve UUID: @uuid, code (" . @response["responseCode"] . ").", "UUID");
 		}
 	);
 	http_request("https://api.mojang.com/user/profiles/@uuid/names", @options);
 }
 
-proc _uuid_get_names_full(@player) {
+proc _uuid_get_names(@player = "") {
 	@uuid = _uuid(@player);
-	return(import("uuid.@uuid.names.full"));
-}
-
-proc _uuid_get_names_short(@player) {
-	@uuid = _uuid(@player);
-	return(import("uuid.@uuid.names.short"));
+	return(_pdata(@uuid)["names"]);
 }
 
 proc _all_players(@world = "") {

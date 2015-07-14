@@ -1,5 +1,5 @@
 proc _chat(@player, @message) {
-	@pastNames = _uuid_get_names_short(@player)[..-2];
+	@pastNames = _uuid_get_names(@player)[..-2];
 	@name = associative_array(
 		text: @player,
 		suggest_command: "/msg @player ",
